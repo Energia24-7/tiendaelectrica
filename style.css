@@ -1,0 +1,14 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+#sidebar {
+  width: 250px;
+  min-height: 100vh;
+}
+
+.whatsapp-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
