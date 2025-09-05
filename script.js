@@ -1,5 +1,5 @@
 // URL pública de tu Google Sheets
-const SHEET_URL = "https://docs.google.com/spreadsheets/d/2PACX-1vQ1F0-U9VAAgz2t1e1yDyW7bEUL0OVa_-RbvdeGFQPiLqM1VrwK-jxTsd6UllP9ByAsUW1WzfmkJ3RF/pubhtml";
+const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1F0-U9VAAgz2t1e1yDyW7bEUL0OVa_-RbvdeGFQPiLqM1VrwK-jxTsd6UllP9ByAsUW1WzfmkJ3RF/pubhtml";
 
 // Inicializar
 window.addEventListener("DOMContentLoaded", () => {
