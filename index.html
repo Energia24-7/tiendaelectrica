@@ -2,38 +2,40 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Catálogo - Estilo Platt</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tienda Eléctrica</title>
   <link rel="stylesheet" href="style.css">
+  <!-- Bootstrap opcional -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Papa Parse -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 </head>
 <body>
-  <div class="d-flex">
-    <!-- Menú lateral -->
-    <nav id="sidebar" class="bg-dark text-white p-3">
-      <h3 class="text-center">Categorías</h3>
-      <ul id="categories" class="list-unstyled"></ul>
-    </nav>
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Menú lateral -->
+      <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+        <div class="sidebar-sticky pt-3">
+          <h4 class="px-3">Categorías</h4>
+          <ul class="nav flex-column px-3" id="categoryList">
+            <li class="nav-item"><a class="nav-link active" href="#" onclick="filterProducts('Todos')">Todos</a></li>
+          </ul>
+        </div>
+      </nav>
 
-    <!-- Contenido principal -->
-    <div class="flex-grow-1 p-4">
-      <h1 class="mb-4">Catálogo de Productos</h1>
+      <!-- Contenido principal -->
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <h1 class="mt-3">Tienda Eléctrica</h1>
 
-      <!-- Buscador -->
-      <input type="text" id="search" class="form-control mb-3" placeholder="Buscar productos...">
+        <!-- Buscador -->
+        <input type="text" id="searchBox" class="form-control my-3" placeholder="Buscar productos...">
 
-      <!-- Contenedor de productos -->
-      <div id="products" class="row g-3"></div>
+        <!-- Productos -->
+        <div id="productList" class="row"></div>
+      </main>
     </div>
   </div>
 
-  <!-- Botón WhatsApp -->
-  <a href="https://wa.me/593999999999?text=Hola, quiero más información" 
-     class="btn btn-success btn-lg rounded-circle whatsapp-btn" target="_blank">
-    💬
-  </a>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.5.4/tabletop.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
