@@ -5,7 +5,7 @@ function renderCart() {
   tbody.innerHTML = "";
   let total = 0;
   cart.forEach(item => {
-    const itemTotal = (item.Precio*item.cantidad).toFixed(2);
+    const itemTotal = (item.Precio * item.cantidad).toFixed(2);
     total += parseFloat(itemTotal);
     tbody.innerHTML += `
       <tr>
@@ -19,8 +19,8 @@ function renderCart() {
   document.getElementById("cartTotal").textContent = total.toFixed(2);
 }
 
-function updateQuantity(name, qty){
-  const item = cart.find(p => p.Nombre===name);
+function updateQuantity(name, qty) {
+  const item = cart.find(p => p.Nombre === name);
   if(item) item.cantidad = parseInt(qty);
   localStorage.setItem("cart", JSON.stringify(cart));
   renderCart();
