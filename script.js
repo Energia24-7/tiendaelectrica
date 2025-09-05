@@ -1,42 +1,51 @@
-// URL pública de tu Google Sheets
-const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1F0-U9VAAgz2t1e1yDyW7bEUL0OVa_-RbvdeGFQPiLqM1VrwK-jxTsd6UllP9ByAsUW1WzfmkJ3RF/pubhtml";
-
-// Inicializar
-window.addEventListener("DOMContentLoaded", () => {
-  Tabletop.init({
-    key: SHEET_URL,
-    simpleSheet: true,
-    callback: showProducts
-  });
-
-  document.getElementById("search").addEventListener("input", filterProducts);
-});
+const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1F0-U9VAAgz2t1e1yDyW7bEUL0OVa_-RbvdeGFQPiLqM1VrwK-jxTsd6UllP9ByAsUW1WzfmkJ3RF/pub?output=csv";
 
 let allProducts = [];
 
-// Mostrar productos
-function showProducts(data) {
-  allProducts = data;
-  renderProducts(allProducts);
-  renderCategories(allProducts);
+// Cargar productos desde Google Sheets
+Papa.parse(SHEET_URL, {
+  download: true,
+  header: true,
+  complete: function(results) {
+    console.log("Datos recibidos:", results.data);
+    allProducts = results.data;
+    renderCategories();
+    renderProducts(allProducts);
+  },
+  error: function(err) {
+    console.error("Error leyendo hoja:", err);
+  }
+});
+
+// Renderizar categorías
+function renderCategories() {
+  const categories = [...new Set(allProducts.map(p => p.Categoria))];
+  const categoryList = document.getElementById("categoryList");
+
+  categories.forEach(cat => {
+    let li = document.createElement("li");
+    li.className = "nav-item";
+    li.innerHTML = `<a href="#" class="nav-link" onclick="filterProducts('${cat}')">${cat}</a>`;
+    categoryList.appendChild(li);
+  });
 }
 
-// Renderizado de productos
+// Renderizar productos
 function renderProducts(products) {
-  const container = document.getElementById("products");
+  const container = document.getElementById("productList");
   container.innerHTML = "";
 
-  products.forEach(p => {
+  products.forEach((p, index) => {
+    if (!p.Nombre) return; // Evitar filas vacías
     const card = `
       <div class="col-md-4">
-        <div class="card h-100">
+        <div class="card">
           <img src="${p.Imagen}" class="card-img-top" alt="${p.Nombre}">
           <div class="card-body">
             <h5 class="card-title">${p.Nombre}</h5>
-            <p class="card-text">${p.Descripción}</p>
-            <p class="text-primary fw-bold">$${p.Precio}</p>
-            <a href="https://wa.me/593999999999?text=Quiero comprar ${encodeURIComponent(p.Nombre)}" 
-               class="btn btn-success w-100" target="_blank">Consultar</a>
+            <p class="card-text">${p.Descripcion || ""}</p>
+            <p class="card-text"><strong>$${p.Precio}</strong></p>
+            <a href="https://wa.me/593999999999?text=Hola! Estoy interesado en ${p.Nombre}" target="_blank" class="btn btn-success">WhatsApp</a>
           </div>
         </div>
       </div>
@@ -45,37 +54,21 @@ function renderProducts(products) {
   });
 }
 
-// Renderizado de categorías
-function renderCategories(products) {
-  const cats = [...new Set(products.map(p => p.Categoría))];
-  const list = document.getElementById("categories");
-  list.innerHTML = "";
-
-  cats.forEach(c => {
-    const item = document.createElement("li");
-    item.textContent = c;
-    item.classList.add("mb-2", "cursor-pointer");
-    item.style.cursor = "pointer";
-    item.onclick = () => {
-      renderProducts(allProducts.filter(p => p.Categoría === c));
-    };
-    list.appendChild(item);
-  });
-
-  // Opción mostrar todo
-  const all = document.createElement("li");
-  all.textContent = "Todos";
-  all.style.cursor = "pointer";
-  all.onclick = () => renderProducts(allProducts);
-  list.prepend(all);
+// Filtro por categoría
+function filterProducts(category) {
+  if (category === "Todos") {
+    renderProducts(allProducts);
+  } else {
+    renderProducts(allProducts.filter(p => p.Categoria === category));
+  }
 }
 
-// Filtro de búsqueda
-function filterProducts() {
-  const query = this.value.toLowerCase();
-  const filtered = allProducts.filter(p =>
-    p.Nombre.toLowerCase().includes(query) ||
-    p.Descripción.toLowerCase().includes(query)
+// Buscador
+document.getElementById("searchBox").addEventListener("input", function() {
+  const term = this.value.toLowerCase();
+  const filtered = allProducts.filter(p => 
+    p.Nombre.toLowerCase().includes(term) || 
+    (p.Descripcion && p.Descripcion.toLowerCase().includes(term))
   );
   renderProducts(filtered);
-}
+});
