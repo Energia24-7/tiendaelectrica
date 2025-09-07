@@ -16,6 +16,7 @@
       border-radius: 50%; width: 60px; height: 60px;
       display: flex; align-items: center; justify-content: center;
       font-size: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      text-decoration: none;
     }
     .whatsapp-float:hover { background: #1ebe5a; }
     .product-card { transition: transform 0.2s; }
@@ -79,83 +80,10 @@
 <!-- Botón WhatsApp -->
 <a href="https://wa.me/593998879869" class="whatsapp-float" target="_blank">💬</a>
 
-<script src="https://cdn.jsdelivr.net/npm/tabletop@1.6.2/src/tabletop.min.js"></script>
-<script>
-  const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1F0-U9VAAgz2t1e1yDyW7bEUL0OVa_-RbvdeGFQPiLqM1VrwK-jxTsd6UllP9ByAsUW1WzfmkJ3RF/pubhtml";
-  let products = [];
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+<!-- Librería PapaParse -->
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<!-- Script de la tienda -->
+<script src="script.js"></script>
 
-  function updateCartCount() {
-    document.getElementById("cart-count").textContent = cart.length;
-    localStorage.setItem("cart", JSON.stringify(cart));
-  }
-
-  function renderProducts() {
-    const categoryFilter = document.getElementById("filter-category").value;
-    const brandFilter = document.getElementById("filter-brand").value;
-    const list = document.getElementById("product-list");
-    list.innerHTML = "";
-
-    products.filter(p =>
-      (categoryFilter === "all" || p.categoria === categoryFilter) &&
-      (brandFilter === "all" || p.marca === brandFilter)
-    ).forEach((p, i) => {
-      const card = document.createElement("div");
-      card.className = "col-md-4 mb-4";
-      card.innerHTML = `
-        <div class="card product-card">
-          <img src="${p.imagen}" class="card-img-top" alt="${p.modelo}">
-          <div class="card-body">
-            <h5 class="card-title">${p.marca} - ${p.modelo}</h5>
-            <p class="card-text">${p.descripcion}</p>
-            <p><b>Precio:</b> $${p.precio}</p>
-            <p><b>Entrega:</b> ${p.entrega}</p>
-            <button class="btn btn-primary" onclick="addToCart(${i})">➕ Añadir al carrito</button>
-          </div>
-        </div>`;
-      list.appendChild(card);
-    });
-  }
-
-  function addToCart(index) {
-    cart.push(products[index]);
-    updateCartCount();
-  }
-
-  Tabletop.init({
-    key: sheetUrl,
-    simpleSheet: true,
-    callback: function(data) {
-      products = data.map(row => ({
-        categoria: row.Categoria,
-        marca: row.Marca,
-        modelo: row.Modelo,
-        precio: row.Precio,
-        entrega: row["Tiempo de entrega"],
-        descripcion: row.Descripcion,
-        imagen: row.Imagen
-      }));
-      // Cargar filtros
-      const categories = [...new Set(products.map(p => p.categoria))];
-      const brands = [...new Set(products.map(p => p.marca))];
-      categories.forEach(c => {
-        const opt = document.createElement("option");
-        opt.value = c; opt.textContent = c;
-        document.getElementById("filter-category").appendChild(opt);
-      });
-      brands.forEach(b => {
-        const opt = document.createElement("option");
-        opt.value = b; opt.textContent = b;
-        document.getElementById("filter-brand").appendChild(opt);
-      });
-      renderProducts();
-    }
-  });
-
-  document.getElementById("filter-category").addEventListener("change", renderProducts);
-  document.getElementById("filter-brand").addEventListener("change", renderProducts);
-
-  updateCartCount();
-</script>
 </body>
 </html>
