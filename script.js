@@ -1,94 +1,81 @@
-const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1F0-U9VAAgz2t1e1yDyW7bEUL0OVa_-RbvdeGFQPiLqM1VrwK-jxTsd6UllP9ByAsUW1WzfmkJ3RF/pub?output=csv";
-let products = [];
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
+<script src="https://cdn.jsdelivr.net/npm/tabletop@1.6.2/src/tabletop.min.js"></script>
+<script>
+  // Usar el link "pubhtml" (no csv)
+  const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1F0-U9VAAgz2t1e1yDyW7bEUL0OVa_-RbvdeGFQPiLqM1VrwK-jxTsd6UllP9ByAsUW1WzfmkJ3RF/pubhtml";
 
-// Mostrar número en carrito
-function updateCartCount() {
-  document.getElementById("cart-count").textContent = cart.length;
-}
+  let products = [];
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-// Renderizar productos
-function renderProducts(filterCategory = null, filterBrand = null) {
-  const container = document.getElementById("products");
-  container.innerHTML = "";
+  function updateCartCount() {
+    document.getElementById("cart-count").textContent = cart.length;
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }
 
-  let filtered = products;
-  if (filterCategory) filtered = filtered.filter(p => p.Categoria === filterCategory);
-  if (filterBrand) filtered = filtered.filter(p => p.Marca === filterBrand);
+  function renderProducts() {
+    const categoryFilter = document.getElementById("filter-category").value;
+    const brandFilter = document.getElementById("filter-brand").value;
+    const list = document.getElementById("product-list");
+    list.innerHTML = "";
 
-  filtered.forEach((p, idx) => {
-    const col = document.createElement("div");
-    col.className = "col-md-4 mb-4";
-    col.innerHTML = `
-      <div class="card h-100 shadow-sm">
-        <img src="${p.Imagen}" class="card-img-top" alt="${p.Modelo}">
-        <div class="card-body">
-          <h5 class="card-title">${p.Marca} - ${p.Modelo}</h5>
-          <p class="card-text"><strong>Precio:</strong> $${p.Precio}</p>
-          <p><strong>Entrega:</strong> ${p.Entrega}</p>
-          <p>${p.Descripcion}</p>
-          <button class="btn btn-primary add-to-cart" data-id="${idx}">➕ Añadir al carrito</button>
-        </div>
-      </div>
-    `;
-    container.appendChild(col);
-  });
-
-  document.querySelectorAll(".add-to-cart").forEach(btn => {
-    btn.addEventListener("click", (e) => {
-      const id = e.target.getAttribute("data-id");
-      cart.push(products[id]);
-      localStorage.setItem("cart", JSON.stringify(cart));
-      updateCartCount();
+    products.filter(p =>
+      (categoryFilter === "all" || p.categoria === categoryFilter) &&
+      (brandFilter === "all" || p.marca === brandFilter)
+    ).forEach((p, i) => {
+      const card = document.createElement("div");
+      card.className = "col-md-4 mb-4";
+      card.innerHTML = `
+        <div class="card product-card">
+          <img src="${p.imagen}" class="card-img-top" alt="${p.modelo}">
+          <div class="card-body">
+            <h5 class="card-title">${p.marca} - ${p.modelo}</h5>
+            <p class="card-text">${p.descripcion}</p>
+            <p><b>Precio:</b> $${p.precio}</p>
+            <p><b>Entrega:</b> ${p.entrega}</p>
+            <button class="btn btn-primary" onclick="addToCart(${i})">➕ Añadir al carrito</button>
+          </div>
+        </div>`;
+      list.appendChild(card);
     });
-  });
-}
+  }
 
-// Filtros dinámicos
-function renderFilters() {
-  const categories = [...new Set(products.map(p => p.Categoria))];
-  const brands = [...new Set(products.map(p => p.Marca))];
-
-  const catList = document.getElementById("filter-category");
-  const brandList = document.getElementById("filter-brand");
-
-  catList.innerHTML = `<li><a href="#" class="filter-cat" data-cat="">Todos</a></li>`;
-  categories.forEach(cat => {
-    catList.innerHTML += `<li><a href="#" class="filter-cat" data-cat="${cat}">${cat}</a></li>`;
-  });
-
-  brandList.innerHTML = `<li><a href="#" class="filter-brand" data-brand="">Todos</a></li>`;
-  brands.forEach(b => {
-    brandList.innerHTML += `<li><a href="#" class="filter-brand" data-brand="${b}">${b}</a></li>`;
-  });
-
-  document.querySelectorAll(".filter-cat").forEach(el => {
-    el.addEventListener("click", e => {
-      e.preventDefault();
-      renderProducts(e.target.dataset.cat, null);
-    });
-  });
-
-  document.querySelectorAll(".filter-brand").forEach(el => {
-    el.addEventListener("click", e => {
-      e.preventDefault();
-      renderProducts(null, e.target.dataset.brand);
-    });
-  });
-}
-
-// Cargar datos desde Google Sheets
-fetch(sheetURL)
-  .then(res => res.text())
-  .then(text => {
-    const rows = text.split("\n").map(r => r.split(","));
-    const headers = rows[0];
-    products = rows.slice(1).map(r => {
-      let obj = {};
-      headers.forEach((h, i) => obj[h] = r[i]);
-      return obj;
-    });
-    renderProducts();
-    renderFilters();
+  function addToCart(index) {
+    cart.push(products[index]);
     updateCartCount();
+  }
+
+  // ✅ Tabletop con pubhtml
+  Tabletop.init({
+    key: sheetUrl,
+    simpleSheet: true,
+    callback: function(data) {
+      products = data.map(row => ({
+        categoria: row.Categoria,
+        marca: row.Marca,
+        modelo: row.Modelo,
+        precio: row.Precio,
+        entrega: row["Tiempo de entrega"],
+        descripcion: row.Descripcion,
+        imagen: row.Imagen
+      }));
+      // Llenar filtros
+      const categories = [...new Set(products.map(p => p.categoria))];
+      const brands = [...new Set(products.map(p => p.marca))];
+      categories.forEach(c => {
+        const opt = document.createElement("option");
+        opt.value = c; opt.textContent = c;
+        document.getElementById("filter-category").appendChild(opt);
+      });
+      brands.forEach(b => {
+        const opt = document.createElement("option");
+        opt.value = b; opt.textContent = b;
+        document.getElementById("filter-brand").appendChild(opt);
+      });
+      renderProducts();
+    }
   });
+
+  document.getElementById("filter-category").addEventListener("change", renderProducts);
+  document.getElementById("filter-brand").addEventListener("change", renderProducts);
+
+  updateCartCount();
+</script>
