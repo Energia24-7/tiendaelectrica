@@ -53,7 +53,7 @@
 <script>
   // Inicializa EmailJS
   (function() {
-    emailjs.init("TU_PUBLIC_KEY"); // <-- Pega aquí tu Public Key de EmailJS
+    emailjs.init("12KodIR87XG-5sLqB"); // <-- Pega aquí tu Public Key de EmailJS
   })();
 
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -148,7 +148,7 @@ Total: $${document.getElementById("total").textContent}
 `
     };
 
-    emailjs.send("TU_SERVICE_ID", "TU_TEMPLATE_ID", params)
+    emailjs.send("service_da5iz2u", "template_vail7ma", params)
       .then(function() {
         alert("✅ Cotización enviada con éxito.");
         localStorage.removeItem("cart");
