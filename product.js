@@ -26,7 +26,7 @@ Papa.parse(SHEET_URL, {
               <p><strong>Marca:</strong> ${product.Marca}</p>
               <p><strong>Modelo:</strong> ${product.Modelo}</p>
               <p><strong>Precio:</strong> $${product.Precio}</p>
-              <p><strong>Entrega:</strong> ${product.entrega}</p>
+              <p><strong>Entrega:</strong> ${product.Entrega}</p>
               <p><strong>Categoría:</strong> ${product.Categoria}</p>
               <p><strong>Sategoría:</strong> ${product.Sategoria}</p>
               <p>${product.Descripcion}</p>
