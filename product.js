@@ -26,8 +26,9 @@ Papa.parse(SHEET_URL, {
               <p><strong>Marca:</strong> ${product.Marca}</p>
               <p><strong>Modelo:</strong> ${product.Modelo}</p>
               <p><strong>Precio:</strong> $${product.Precio}</p>
-              <p><strong>Entrega:</strong> ${product.Entrega}</p>
+              <p><strong>Entrega:</strong> ${product.entrega}</p>
               <p><strong>Categoría:</strong> ${product.Categoria}</p>
+              <p><strong>Sategoría:</strong> ${product.Sategoria}</p>
               <p>${product.Descripcion}</p>
               <a href="${product.HojaDatos}" target="_blank" class="btn btn-info">Ver hoja de datos</a>
               <button class="btn btn-primary" onclick="addToCart('${product.Nombre}')">Añadir al carrito</button>
