@@ -28,7 +28,7 @@ function renderProducts() {
           <h5 class="card-title">${p.marca} - ${p.modelo}</h5>
           <p class="card-text">${p.descripcion}</p>
           <p><b>Precio:</b> $${p.precio}</p>
-          <p><b>Entrega:</b> ${p.entrega}</p>
+          <p><b>Entrega:</b> ${p.Entrega}</p>
           <p><b>Stock:</b> ${p.Stock}</p>
           <button class="btn btn-primary" onclick="addToCart(${i})">➕ Añadir al carrito</button>
         </div>
@@ -52,7 +52,7 @@ Papa.parse(sheetUrl, {
       marca: row.Marca,
       modelo: row.Modelo,
       precio: row.Precio,
-      entrega: row.entrega,
+      entrega: row.Entrega,
       Stock: row.Stock,
       descripcion: row.Descripcion,
       imagen: row.Imagen
