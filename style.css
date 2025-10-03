@@ -22,6 +22,37 @@ footer {
   box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
   text-align: center;
 }
+/* Botón flotante WhatsApp */
+.whatsapp-float {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #25D366;
+  color: white;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  text-decoration: none;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  z-index: 1000;
+}
+
 .whatsapp-float:hover {
-  background: #20b954;
+  background-color: #1ebe5d;
+}
+
+.whatsapp-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.whatsapp-text {
+  display: inline-block;
+}
+
 }
