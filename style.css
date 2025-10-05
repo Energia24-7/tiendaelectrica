@@ -15,39 +15,30 @@ footer {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background-color: #25D366;
+  background: #25D366;
   color: white;
-  border-radius: 50px; /* Rectángulo redondeado */
+  border-radius: 50%;
+  width: 55px;
+  height: 55px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
   text-decoration: none;
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-  font-weight: bold;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
   z-index: 1000;
 }
 
 .whatsapp-float:hover {
-  background-color: #1ebe5d;
+  background: #1ebe5a;
 }
 
+/* Controla tamaño del icono dentro del botón */
+.whatsapp-float img.whatsapp-icon {
+  width: 28px;
+  height: 28px;
+}
 
+/* Oculta el texto si no lo quieres */
 .whatsapp-text {
-  display: inline-block;
-}
-
-
-.whatsapp-icon {
-  width: 20px;  /* or smaller, adjust to your liking */
-  height: 20px;
-}
-
-.whatsapp-icon img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain; /* ensures aspect ratio is preserved */
-  display: block;
+  display: none;
 }
