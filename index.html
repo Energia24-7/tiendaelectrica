@@ -7,6 +7,9 @@
 
   <title>Tienda Eléctrica</title>
 
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://energia247.online/">
+
   <!-- Favicon -->
   <link rel="icon" href="favicon.png" type="image/png">
 
@@ -27,18 +30,40 @@
     .content { margin-left: 240px; padding: 20px; }
     .navbar-brand img { height: 40px; }
     .cart-info { font-size: 0.9em; margin-left: 10px; }
+
     .whatsapp-float {
-      position: fixed; bottom: 20px; right: 20px;
-      background: #25D366; color: white;
-      border-radius: 50%; width: 60px; height: 60px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #25D366;
+      border-radius: 50%;
+      width: 55px;
+      height: 55px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
       text-decoration: none;
+      z-index: 1000;
     }
     .whatsapp-float:hover { background: #1ebe5a; }
+
+    .whatsapp-float img.whatsapp-icon {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+    }
+
     .product-card { transition: transform 0.2s; }
     .product-card:hover { transform: scale(1.03); }
-    .cart-badge { background: red; color: white; border-radius: 50%; padding: 3px 8px; font-size: 0.8em; margin-left: 5px; }
+    .cart-badge {
+      background: red;
+      color: white;
+      border-radius: 50%;
+      padding: 3px 8px;
+      font-size: 0.8em;
+      margin-left: 5px;
+    }
 
     /* --- Ajustes responsive para móviles --- */
     @media (max-width: 991px) {
@@ -113,12 +138,9 @@
 </div>
 
 <!-- Botón WhatsApp -->
-<!-- Botón flotante de WhatsApp -->
 <a href="https://wa.me/593998879869" class="whatsapp-float" target="_blank" aria-label="Chatea con nosotros en WhatsApp">
   <img src="whatsapp.png" alt="WhatsApp" class="whatsapp-icon">
 </a>
-
-
 
 <!-- Librería PapaParse -->
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
