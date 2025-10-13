@@ -2,152 +2,162 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <!-- Vista móvil -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>⚡ Tienda Energía 24/7 | Productos Eléctricos en Ecuador</title>
+  <meta name="description" content="Compra materiales eléctricos, iluminación, energía solar y accesorios técnicos en Ecuador. Envíos a todo el país.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Tienda Eléctrica</title>
-
-  <!-- Canonical URL -->
   <link rel="canonical" href="https://energia247.online/">
-
-  <!-- Favicon -->
   <link rel="icon" href="favicon.png" type="image/png">
 
-  <!-- Bootstrap -->
+  <!-- SEO / Open Graph -->
+  <meta property="og:title" content="Tienda Energía 24/7 - Productos Eléctricos">
+  <meta property="og:description" content="Materiales eléctricos, protecciones, energía solar, tableros eléctricos y más.">
+  <meta property="og:image" content="logo.png">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://energia247.online/">
+
+  <!-- Bootstrap + Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 
-  <style>
-    body { background-color: #f8f9fa; }
-    .sidebar {
-      width: 220px; 
-      float: left; 
-      padding: 20px; 
-      background: #fff; 
-      border-right: 1px solid #ddd; 
-      height: 100vh; 
-      position: fixed; 
-    }
-    .content { margin-left: 240px; padding: 20px; }
-    .navbar-brand img { height: 40px; }
-    .cart-info { font-size: 0.9em; margin-left: 10px; }
-
-    .whatsapp-float {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #25D366;
-      border-radius: 50%;
-      width: 55px;
-      height: 55px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-      text-decoration: none;
-      z-index: 1000;
-    }
-    .whatsapp-float:hover { background: #1ebe5a; }
-
-    .whatsapp-float img.whatsapp-icon {
-      width: 28px;
-      height: 28px;
-      object-fit: contain;
-    }
-
-    .product-card { transition: transform 0.2s; }
-    .product-card:hover { transform: scale(1.03); }
-    .cart-badge {
-      background: red;
-      color: white;
-      border-radius: 50%;
-      padding: 3px 8px;
-      font-size: 0.8em;
-      margin-left: 5px;
-    }
-
-    /* --- Ajustes responsive para móviles --- */
-    @media (max-width: 991px) {
-      .sidebar {
-        position: relative;
-        width: 100%;
-        height: auto;
-        border-right: none;
-        border-bottom: 1px solid #ddd;
-      }
-      .content {
-        margin-left: 0;
-        padding: 10px;
-      }
-    }
-  </style>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 </head>
 <body>
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="index.html">
+        <img src="logo.png" alt="Logo Tienda Eléctrica" class="logo">
+        <span class="ms-2 fw-semibold">Tienda Energía 24/7</span>
+      </a>
 
-<!-- Menú Superior -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="index.html">
-      <img src="logo.png" alt="Logo Tienda Eléctrica"> Tienda Eléctrica
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item"><a class="nav-link" href="tablas.html">Tablas de cálculo</a></li>
-        <li class="nav-item"><a class="nav-link" href="normas.html">Normas y estándares</a></li>
-        <li class="nav-item"><a class="nav-link" href="info.html">Información técnica</a></li>
-        <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
-      </ul>
-      <div class="d-flex align-items-center text-white mt-2 mt-lg-0">
-        <a href="cart.html" class="btn btn-outline-light me-3">
-          🛒 Carrito <span id="cart-count" class="cart-badge">0</span>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="servicios.html">Alquiler de equipos</a></li>
+          <li class="nav-item"><a class="nav-link" href="ventas.html">Tablas de cálculo</a></li>
+          <li class="nav-item"><a class="nav-link" href="bienes.html">Normas y estándares</a></li>
+          <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+        </ul>
+        <a href="cart.html" class="btn btn-outline-light ms-lg-3">
+          🛒 <span id="cart-count" class="cart-badge">0</span>
         </a>
-        <div class="cart-info">
-          <div>Telf: 0998879869</div>
-          <div>Email: fastindustrialsupply@gmail.com</div>
-          <div>Nayón, Quito-Ecuador</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO / OBJETIVO -->
+  <header class="hero">
+    <div class="container text-center">
+      <h1 class="fw-bold">Web industrial especializada en exceso de inventario y presupuestación</h1>
+      <p class="lead text-muted mt-3">Materiales eléctricos, energía solar y soluciones técnicas con envío a todo Ecuador.</p>
+    </div>
+  </header>
+
+  <!-- BARRA DE FILTROS FIJA -->
+  <div class="filter-bar sticky-top shadow-sm">
+    <div class="container py-2">
+      <div class="row g-2 align-items-center">
+        <div class="col-md-3 col-6">
+          <select id="filter-category" class="form-select">
+            <option value="all">Todas las categorías</option>
+          </select>
+        </div>
+        <div class="col-md-3 col-6">
+          <select id="filter-brand" class="form-select">
+            <option value="all">Todas las marcas</option>
+          </select>
+        </div>
+        <div class="col-md-6 mt-2 mt-md-0">
+          <input type="text" id="search-box" class="form-control" placeholder="🔍 Buscar producto...">
         </div>
       </div>
     </div>
   </div>
-</nav>
 
-<!-- Filtro lateral -->
-<div class="sidebar">
-  <h5>Filtrar</h5>
-  <hr>
-  <div>
-    <h6>Categoría</h6>
-    <select id="filter-category" class="form-select mb-3">
-      <option value="all">Todas</option>
-    </select>
-  </div>
-  <div>
-    <h6>Marca</h6>
-    <select id="filter-brand" class="form-select">
-      <option value="all">Todas</option>
-    </select>
-  </div>
-</div>
+  <!-- PRODUCTOS -->
+  <main class="container my-5">
+    <h2 class="text-center mb-4">Nuestros Productos</h2>
+    <div id="productos-container" class="row g-4 justify-content-center"></div>
+  </main>
 
-<!-- Contenido -->
-<div class="content">
-  <h2 class="mb-4">Productos</h2>
-  <div class="row" id="product-list"></div>
-</div>
-
-<!-- Botón WhatsApp -->
+  <!-- Botón WhatsApp -->
 <a href="https://wa.me/593998879869" class="whatsapp-float" target="_blank" aria-label="Chatea con nosotros en WhatsApp">
   <img src="whatsapp.png" alt="WhatsApp" class="whatsapp-icon">
 </a>
 
-<!-- Librería PapaParse -->
-<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Script de la tienda -->
-<script src="script.js"></script>
 
+
+  
+  <!-- FOOTER -->
+  <footer>
+    <p>📍 Nayón, Quito - Ecuador | 📞 0998879869 | ✉️ fastindustrialsupply@gmail.com</p>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ4CQDWoqsX_jruiEkAQ5ONE_BkXKYl0Jb04_8nmZtyi4SxLN2AyqxB9a-_g3NfFr3IrbRt4VLjcOeP/pub?output=csv";
+
+    Papa.parse(sheetUrl, {
+      download: true,
+      header: true,
+      complete: function(results) {
+        const data = results.data.filter(p => (p.Estado || "").toLowerCase() === "activo");
+        const container = document.getElementById("productos-container");
+        const catSelect = document.getElementById("filter-category");
+        const brandSelect = document.getElementById("filter-brand");
+        const searchBox = document.getElementById("search-box");
+
+        const categories = [...new Set(data.map(p => p.Categoria).filter(Boolean))];
+        const brands = [...new Set(data.map(p => p.Marca).filter(Boolean))];
+
+        categories.forEach(c => catSelect.innerHTML += `<option value="${c}">${c}</option>`);
+        brands.forEach(b => brandSelect.innerHTML += `<option value="${b}">${b}</option>`);
+
+        function renderProducts() {
+          const catFilter = catSelect.value;
+          const brandFilter = brandSelect.value;
+          const searchQuery = searchBox.value.toLowerCase().trim();
+
+          const filtered = data.filter(p =>
+            (catFilter === "all" || p.Categoria === catFilter) &&
+            (brandFilter === "all" || p.Marca === brandFilter) &&
+            (
+              p.Nombre?.toLowerCase().includes(searchQuery) ||
+              p.Marca?.toLowerCase().includes(searchQuery) ||
+              p.Modelo?.toLowerCase().includes(searchQuery)
+            )
+          );
+
+          container.innerHTML = filtered.map((p, i) => {
+            const slug = `${(p.Marca || "").toLowerCase().replace(/\s+/g, "-")}-${(p.Modelo || "").toLowerCase().replace(/\s+/g, "-")}`;
+            return `
+              <div class="col-md-3 col-sm-6 fade-in" style="animation-delay:${i * 0.08}s">
+                <div class="card h-100 shadow-sm">
+                  <img src="${p.Imagen || 'no-image.png'}" class="card-img-top" alt="${p.Nombre}">
+                  <div class="card-body text-center">
+                    <h5 class="card-title">${p.Nombre}</h5>
+                    <p class="text-muted">${p.Marca || ''} ${p.Modelo || ''}</p>
+                    <p class="fw-bold text-success">$${p.Precio}</p>
+                    <a href="producto.html?item=${slug}" class="btn btn-outline-primary w-100">Ver producto</a>
+                  </div>
+                </div>
+              </div>`;
+          }).join('') || `<p class="text-center text-muted">No se encontraron productos.</p>`;
+        }
+
+        catSelect.addEventListener("change", renderProducts);
+        brandSelect.addEventListener("change", renderProducts);
+        searchBox.addEventListener("input", renderProducts);
+
+        renderProducts();
+      }
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
