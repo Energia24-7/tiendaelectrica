@@ -1,83 +1,76 @@
-// URL del CSV publicado desde Google Sheets
-const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1F0-U9VAAgz2t1e1yDyW7bEUL0OVa_-RbvdeGFQPiLqM1VrwK-jxTsd6UllP9ByAsUW1WzfmkJ3RF/pub?output=csv";
+const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ4CQDWoqsX_jruiEkAQ5ONE_BkXKYl0Jb04_8nmZtyi4SxLN2AyqxB9a-_g3NfFr3IrbRt4VLjcOeP/pub?output=csv";
 
-let products = [];
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-function updateCartCount() {
-  document.getElementById("cart-count").textContent = cart.length;
-  localStorage.setItem("cart", JSON.stringify(cart));
-}
-
-function renderProducts() {
-  const categoryFilter = document.getElementById("filter-category").value;
-  const brandFilter = document.getElementById("filter-brand").value;
-  const list = document.getElementById("product-list");
-  list.innerHTML = "";
-
-  products.filter(p =>
-    (categoryFilter === "all" || p.categoria === categoryFilter) &&
-    (brandFilter === "all" || p.marca === brandFilter)
-  ).forEach((p, i) => {
-    const card = document.createElement("div");
-    card.className = "col-md-4 mb-4";
-    card.innerHTML = `
-      <div class="card product-card">
-        <img src="${p.imagen}" class="card-img-top" alt="${p.modelo}">
-        <div class="card-body">
-          <h5 class="card-title">${p.marca} - ${p.modelo}</h5>
-          <p class="card-text">${p.descripcion}</p>
-          <p><b>Precio:</b> $${p.precio}</p>
-          <p><b>Entrega:</b> ${p.Entrega}</p>
-          <p><b>Stock:</b> ${p.Stock}</p>
-          <button class="btn btn-primary" onclick="addToCart(${i})">➕ Añadir al carrito</button>
-        </div>
-      </div>`;
-    list.appendChild(card);
-  });
-}
-
-function addToCart(index) {
-  cart.push(products[index]);
-  updateCartCount();
-}
-
-// ✅ Leer CSV con PapaParse
 Papa.parse(sheetUrl, {
   download: true,
   header: true,
   complete: function(results) {
-    products = results.data.map(row => ({
-      categoria: row.Categoria,
-      marca: row.Marca,
-      modelo: row.Modelo,
-      precio: row.Precio,
-      entrega: row.Entrega,
-      Stock: row.Stock,
-      descripcion: row.Descripcion,
-      imagen: row.Imagen
-    }));
+    let productos = results.data.filter(p => (p.Estado || "").toLowerCase() === "activo");
+    const container = document.getElementById("productos-container");
+    const filterCategory = document.getElementById("filter-category");
+    const filterBrand = document.getElementById("filter-brand");
 
-    // Cargar filtros
-    const categories = [...new Set(products.map(p => p.categoria))];
-    const brands = [...new Set(products.map(p => p.marca))];
+    // ✅ Build unique filter options
+    const categorias = [...new Set(productos.map(p => p.Categoria).filter(Boolean))];
+    const marcas = [...new Set(productos.map(p => p.Marca).filter(Boolean))];
 
-    categories.forEach(c => {
+    categorias.forEach(c => {
       const opt = document.createElement("option");
-      opt.value = c; opt.textContent = c;
-      document.getElementById("filter-category").appendChild(opt);
-    });
-    brands.forEach(b => {
-      const opt = document.createElement("option");
-      opt.value = b; opt.textContent = b;
-      document.getElementById("filter-brand").appendChild(opt);
+      opt.value = c;
+      opt.textContent = c;
+      filterCategory.appendChild(opt);
     });
 
-    renderProducts();
+    marcas.forEach(m => {
+      const opt = document.createElement("option");
+      opt.value = m;
+      opt.textContent = m;
+      filterBrand.appendChild(opt);
+    });
+
+    // ✅ Render products
+    function renderProducts(list) {
+      container.innerHTML = "";
+      list.forEach(p => {
+        const slug = p.Modelo
+          ? p.Modelo.toLowerCase().replace(/\s+/g, "-").replace(/[^\w-]/g, "")
+          : p.Nombre.toLowerCase().replace(/\s+/g, "-").replace(/[^\w-]/g, "");
+
+        const card = document.createElement("div");
+        card.className = "col-md-3";
+
+        card.innerHTML = `
+          <div class="card h-100 shadow-sm">
+            <img src="${p.Imagen}" class="card-img-top" alt="${p.Nombre}">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">${p.Nombre}</h5>
+              <p class="card-text text-muted">${p.Marca || ""} ${p.Modelo || ""}</p>
+              <p class="fw-bold text-success">$${p.Precio}</p>
+              <a href="producto.html?item=${slug}" class="btn btn-primary mt-auto">Ver producto</a>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // ✅ Filtering behavior
+    function applyFilters() {
+      const selectedCategory = filterCategory.value;
+      const selectedBrand = filterBrand.value;
+
+      const filtered = productos.filter(p => {
+        const matchCategory = selectedCategory === "all" || p.Categoria === selectedCategory;
+        const matchBrand = selectedBrand === "all" || p.Marca === selectedBrand;
+        return matchCategory && matchBrand;
+      });
+
+      renderProducts(filtered);
+    }
+
+    filterCategory.addEventListener("change", applyFilters);
+    filterBrand.addEventListener("change", applyFilters);
+
+    // Initial render
+    renderProducts(productos);
   }
 });
-
-document.getElementById("filter-category").addEventListener("change", renderProducts);
-document.getElementById("filter-brand").addEventListener("change", renderProducts);
-
-updateCartCount();
