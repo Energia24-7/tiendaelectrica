@@ -2,141 +2,186 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Carrito - Tienda Eléctrica</title>
+  <title>Carrito | Energía 24/7</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Carrito de compras - Energía 24/7">
+  <meta property="og:title" content="Carrito Energía 24/7">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="logo.png">
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <style>
-    body { background-color: #f8f9fa; }
-    .container { margin-top: 30px; }
-    .cart-table th, .cart-table td { vertical-align: middle; }
-  </style>
+  <link rel="icon" href="favicon.png" type="image/png">
 </head>
+
 <body>
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow-sm">
+    <div class="container d-flex align-items-center justify-content-between">
+      <a class="navbar-brand d-flex align-items-center" href="index.html">
+        <img src="logo.png" alt="Logo Energía 24/7" class="logo-img me-2">
+        <div>
+          <span class="fw-bold text-warning">Energía 24/7</span><br>
+          <small class="text-light tagline">Web industrial especializada en exceso de inventario y presupuestación</small>
+        </div>
+      </a>
 
-<nav class="navbar navbar-dark bg-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="index.html">🛒 Tienda Eléctrica</a>
-  </div>
-</nav>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-<div class="container">
-  <h2 class="my-4">Carrito de Compras</h2>
-  <div id="cart-container"></div>
-
-  <div class="mt-4">
-    <h4>Resumen</h4>
-    <p><b>Subtotal:</b> $<span id="subtotal">0.00</span></p>
-    <p><b>IVA (15%):</b> $<span id="iva">0.00</span></p>
-    <p><b>Total:</b> $<span id="total">0.00</span></p>
-  </div>
-
-  <div class="mt-4">
-    <h4>Pedir Cotización</h4>
-    <form id="quote-form">
-      <div class="mb-3">
-        <label class="form-label">Nombre</label>
-        <input type="text" id="name" class="form-control" required>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="#servicios">Servicios</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
+          <li class="nav-item"><a class="nav-link active" href="cart.html"><i class="bi bi-cart"></i> Carrito</a></li>
+        </ul>
       </div>
-      <div class="mb-3">
-        <label class="form-label">Teléfono</label>
-        <input type="text" id="phone" class="form-control" required>
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Email</label>
-        <input type="email" id="email" class="form-control" required>
-      </div>
-      <button type="submit" class="btn btn-success">📩 Enviar Cotización</button>
-    </form>
+    </div>
+  </nav>
+
+  <!-- CONTENIDO -->
+  <div class="container my-5 pt-5">
+    <h2 class="text-center mb-4">🛒 Carrito de Compras</h2>
+    <div id="cart-container" class="mb-5"></div>
+
+    <div class="card shadow-sm p-4 mb-5">
+      <h4 class="mb-3">Resumen</h4>
+      <p><strong>Subtotal:</strong> $<span id="subtotal">0.00</span></p>
+      <p><strong>IVA (15%):</strong> $<span id="iva">0.00</span></p>
+      <p><strong>Total:</strong> $<span id="total">0.00</span></p>
+    </div>
+
+    <div class="card shadow-sm p-4 mb-5">
+      <h4 class="mb-3">Pedir Cotización</h4>
+      <form id="quote-form">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label class="form-label">Nombre</label>
+            <input type="text" id="name" class="form-control" required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Teléfono</label>
+            <input type="text" id="phone" class="form-control" required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Email</label>
+            <input type="email" id="email" class="form-control" required>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-warning text-dark fw-bold mt-4">
+          <i class="bi bi-envelope"></i> Enviar Cotización
+        </button>
+      </form>
+    </div>
   </div>
-</div>
 
-<script>
-  // Inicializa EmailJS
-  (function() {
-    emailjs.init("12KodIR87XG-5sLqB"); // <-- Pega aquí tu Public Key de EmailJS
-  })();
+  <!-- FOOTER -->
+  <footer class="bg-dark text-white text-center py-4 mt-5">
+    <p class="mb-1">📍 Nayón, Quito - Ecuador | 📞 0998879869 | ✉️ fastindustrialsupply@gmail.com</p>
+    <p class="text-secondary small mb-0">&copy; 2025 Energía 24/7. Todos los derechos reservados.</p>
+  </footer>
 
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  <script>
+    // Inicializa EmailJS
+    (function() {
+      emailjs.init("12KodIR87XG-5sLqB"); // Tu Public Key
+    })();
 
-  function renderCart() {
-    const container = document.getElementById("cart-container");
-    container.innerHTML = "";
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    if (cart.length === 0) {
-      container.innerHTML = "<div class='alert alert-info'>Tu carrito está vacío.</div>";
+    function renderCart() {
+      const container = document.getElementById("cart-container");
+      container.innerHTML = "";
+
+      if (cart.length === 0) {
+        container.innerHTML = "<div class='alert alert-info text-center'>Tu carrito está vacío.</div>";
+        updateSummary();
+        return;
+      }
+
+      const table = document.createElement("table");
+      table.className = "table table-striped align-middle shadow-sm";
+      table.innerHTML = `
+        <thead class="table-dark">
+          <tr>
+            <th>Producto</th>
+            <th>Código</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Subtotal</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${cart.map((item, i) => `
+            <tr>
+              <td>${item.Nombre}</td>
+              <td>${item.Codigo || '-'}</td>
+              <td>$${item.Precio.toFixed(2)}</td>
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  <button class="btn btn-outline-secondary btn-sm" onclick="changeQty(${i}, -1)"><i class="bi bi-dash"></i></button>
+                  <span class="fw-bold">${item.Cantidad}</span>
+                  <button class="btn btn-outline-secondary btn-sm" onclick="changeQty(${i}, 1)"><i class="bi bi-plus"></i></button>
+                </div>
+              </td>
+              <td>$${(item.Precio * item.Cantidad).toFixed(2)}</td>
+              <td><button class="btn btn-danger btn-sm" onclick="removeItem(${i})"><i class="bi bi-trash"></i></button></td>
+            </tr>
+          `).join("")}
+        </tbody>
+      `;
+      container.appendChild(table);
       updateSummary();
-      return;
     }
 
-    const table = document.createElement("table");
-    table.className = "table cart-table";
-    table.innerHTML = `
-      <thead class="table-dark">
-        <tr>
-          <th>Producto</th>
-          <th>Precio</th>
-          <th>Cantidad</th>
-          <th>Subtotal</th>
-          <th>Acción</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${cart.map((item, i) => `
-          <tr>
-            <td>${item.marca} - ${item.modelo}</td>
-            <td>$${item.precio}</td>
-            <td>
-              <input type="number" class="form-control form-control-sm" value="${item.cantidad || 1}" min="1"
-                onchange="updateQuantity(${i}, this.value)">
-            </td>
-            <td>$${(item.precio * (item.cantidad || 1)).toFixed(2)}</td>
-            <td><button class="btn btn-danger btn-sm" onclick="removeItem(${i})">🗑 Eliminar</button></td>
-          </tr>
-        `).join("")}
-      </tbody>
-    `;
-    container.appendChild(table);
-    updateSummary();
-  }
+    function changeQty(index, delta) {
+      cart[index].Cantidad = Math.max(1, cart[index].Cantidad + delta);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      renderCart();
+    }
 
-  function updateQuantity(index, qty) {
-    cart[index].cantidad = parseInt(qty);
-    localStorage.setItem("cart", JSON.stringify(cart));
-    renderCart();
-  }
+    function removeItem(index) {
+      cart.splice(index, 1);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      renderCart();
+    }
 
-  function removeItem(index) {
-    cart.splice(index, 1);
-    localStorage.setItem("cart", JSON.stringify(cart));
-    renderCart();
-  }
+    function updateSummary() {
+      let subtotal = cart.reduce((sum, item) => sum + item.Precio * item.Cantidad, 0);
+      let iva = subtotal * 0.15;
+      let total = subtotal + iva;
 
-  function updateSummary() {
-    let subtotal = cart.reduce((sum, item) => sum + item.precio * (item.cantidad || 1), 0);
-    let iva = subtotal * 0.15;
-    let total = subtotal + iva;
+      document.getElementById("subtotal").textContent = subtotal.toFixed(2);
+      document.getElementById("iva").textContent = iva.toFixed(2);
+      document.getElementById("total").textContent = total.toFixed(2);
+    }
 
-    document.getElementById("subtotal").textContent = subtotal.toFixed(2);
-    document.getElementById("iva").textContent = iva.toFixed(2);
-    document.getElementById("total").textContent = total.toFixed(2);
-  }
+    document.getElementById("quote-form").addEventListener("submit", function(e) {
+      e.preventDefault();
 
-  document.getElementById("quote-form").addEventListener("submit", function(e) {
-    e.preventDefault();
+      if (cart.length === 0) {
+        alert("⚠️ Tu carrito está vacío.");
+        return;
+      }
 
-    const name = document.getElementById("name").value;
-    const phone = document.getElementById("phone").value;
-    const email = document.getElementById("email").value;
+      const name = document.getElementById("name").value;
+      const phone = document.getElementById("phone").value;
+      const email = document.getElementById("email").value;
 
-    const orderDetails = cart.map(item => 
-      `${item.marca} - ${item.modelo} x${item.cantidad || 1} = $${(item.precio * (item.cantidad || 1)).toFixed(2)}`
-    ).join("\n");
+      const orderDetails = cart.map(item => 
+        `${item.Nombre} (Código: ${item.Codigo}) x${item.Cantidad} = $${(item.Precio * item.Cantidad).toFixed(2)}`
+      ).join("\n");
 
-    const params = {
-      user_name: name,
-      user_phone: phone,
-      user_email: email,
-      message: `
+      const params = {
+        user_name: name,
+        user_phone: phone,
+        user_email: email,
+        message: `
 Cotización solicitada:
 
 Items:
@@ -146,21 +191,23 @@ Subtotal: $${document.getElementById("subtotal").textContent}
 IVA: $${document.getElementById("iva").textContent}
 Total: $${document.getElementById("total").textContent}
 `
-    };
+      };
 
-    emailjs.send("service_da5iz2u", "template_vail7ma", params)
-      .then(function() {
-        alert("✅ Cotización enviada con éxito.");
-        localStorage.removeItem("cart");
-        cart = [];
-        renderCart();
-      }, function(error) {
-        alert("❌ Error al enviar cotización: " + JSON.stringify(error));
-      });
-  });
+      emailjs.send("service_da5iz2u", "template_vail7ma", params)
+        .then(() => {
+          alert("✅ Cotización enviada con éxito.");
+          localStorage.removeItem("cart");
+          cart = [];
+          renderCart();
+        })
+        .catch(error => {
+          alert("❌ Error al enviar cotización: " + JSON.stringify(error));
+        });
+    });
 
-  renderCart();
-</script>
+    renderCart();
+  </script>
 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
